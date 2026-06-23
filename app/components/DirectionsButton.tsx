@@ -22,7 +22,10 @@ export function useMapApp(): MapApp {
   const [app, setApp] = useState<MapApp>("google");
   useEffect(() => {
     const saved = localStorage.getItem("mapApp") as MapApp | null;
-    if (saved && saved in MAP_APPS) setApp(saved);
+    if (saved && saved in MAP_APPS) setApp(saved as MapApp);
+    const handler = (e: Event) => setApp((e as CustomEvent<MapApp>).detail);
+    window.addEventListener("mapapp-changed", handler);
+    return () => window.removeEventListener("mapapp-changed", handler);
   }, []);
   return app;
 }
@@ -68,6 +71,7 @@ export function MapAppPicker() {
   function select(app: MapApp) {
     setPreferred(app);
     localStorage.setItem("mapApp", app);
+    window.dispatchEvent(new CustomEvent("mapapp-changed", { detail: app }));
     setOpen(false);
   }
 
