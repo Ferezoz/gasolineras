@@ -67,6 +67,8 @@ Push to `main` — Vercel auto-deploys on every push. No environment variables n
 - Search center state (`searchCenter`) separates "where to search" from GPS location — enables pan-and-search without losing the user's position
 - Nav app preference stored in `localStorage`, read on mount
 - Light/dark theme via Tailwind `dark:` prefix (media query, no toggle needed)
-- PWA: manifest + Apple meta tags + `viewport-fit=cover` + safe area insets for iPhone notch
+- PWA: manifest + Apple meta tags + `viewport-fit=cover` + safe area insets via `.safe-top` CSS class on headers (NOT on body — body padding would push height beyond 100dvh and cause page scroll)
 - `dvh` units used throughout to handle mobile browser chrome correctly
+- Mobile scroll lock: `html, body { overflow: hidden }` (safe since heights are exactly 100dvh — nothing clips) + `overscroll-contain` on the list div prevents iOS rubber-band bounce
+- Nav app preference (`mapapp-changed` custom event): `MapAppPicker` dispatches it on select, `useMapApp` listens — this is needed because `storage` events don't fire in the same tab
 - pnpm is the package manager (not npm or yarn)
