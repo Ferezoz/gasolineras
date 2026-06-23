@@ -6,6 +6,11 @@
   border-top-color: transparent !important;
 }
 
+/* Prevent iOS rubber-band overscroll on the page body */
+body {
+  overscroll-behavior: none;
+}
+
 /* Safe area insets for iOS standalone mode (notch / Dynamic Island) */
 .safe-top { padding-top: env(safe-area-inset-top); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
