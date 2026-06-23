@@ -107,7 +107,7 @@ export default function StationList({ stations, fuelType, selectedId, onSelect }
       )}
 
       {/* List */}
-      <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+      <div className="flex-1 overflow-y-auto overscroll-contain space-y-2 pr-1">
         {stations.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-600">
             <p className="text-4xl mb-3">⛽</p>

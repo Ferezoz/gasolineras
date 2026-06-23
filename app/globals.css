@@ -6,9 +6,10 @@
   border-top-color: transparent !important;
 }
 
-/* Prevent iOS rubber-band overscroll on the page body */
-body {
-  overscroll-behavior: none;
+/* Prevent iOS rubber-band drag — heights are exactly 100dvh so nothing gets clipped */
+html, body {
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Safe area insets for iOS standalone mode (notch / Dynamic Island) */
