@@ -2,13 +2,18 @@
   "name": "gasolineras",
   "private": true,
   "scripts": {
-    "dev": "DOTENV_PRIVATE_KEY=${GASOLINERAS_DOTENV_PRIVATE_KEY} dotenvx run -- next dev --turbo",
-    "build": "DOTENV_PRIVATE_KEY=${GASOLINERAS_DOTENV_PRIVATE_KEY} dotenvx run -- next build",
-    "start": "DOTENV_PRIVATE_KEY=${GASOLINERAS_DOTENV_PRIVATE_KEY} dotenvx run -- next start",
-    "lint": "DOTENV_PRIVATE_KEY=${GASOLINERAS_DOTENV_PRIVATE_KEY} dotenvx run -- next lint",
+    "dev": "DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY:-$(bws secret get 4378f83f-e685-480a-9a5d-b472007a713d | jq -r '.value')} dotenvx run -- next dev --turbo",
+    "build": "DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY:-$(bws secret get 4378f83f-e685-480a-9a5d-b472007a713d | jq -r '.value')} dotenvx run -- next build",
+    "start": "DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY:-$(bws secret get 4378f83f-e685-480a-9a5d-b472007a713d | jq -r '.value')} dotenvx run -- next start",
+    "lint": "DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY:-$(bws secret get 4378f83f-e685-480a-9a5d-b472007a713d | jq -r '.value')} dotenvx run -- next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,md,json}\"",
+    "vercel:build": "vercel build",
+    "vercel:deploy": "vercel --prod",
+    "vercel:link": "vercel link",
+    "vercel:login": "vercel login",
     "dotenvx:encrypt": "dotenvx encrypt",
-    "dotenvx:decrypt": "dotenvx decrypt"
+    "dotenvx:decrypt": "DOTENV_PRIVATE_KEY=${DOTENV_PRIVATE_KEY:-$(bws secret get 4378f83f-e685-480a-9a5d-b472007a713d | jq -r '.value')} dotenvx decrypt",
+    "update": "pnpm up --latest"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.51.1",
