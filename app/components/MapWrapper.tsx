@@ -8,7 +8,7 @@ const Map = dynamic(() => import("./Map"), {
   loading: () => (
     <div className="h-full w-full rounded-xl bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
       <div className="flex flex-col items-center gap-3 text-gray-500">
-        <div className="w-8 h-8 border-2 border-gray-400 dark:border-white/60 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
         <span className="text-sm">Cargando mapa...</span>
       </div>
     </div>

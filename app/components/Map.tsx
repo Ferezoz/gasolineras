@@ -169,7 +169,7 @@ export default function Map({ userLat, userLng, stations, fuelType, selectedId, 
             ref={(ref) => { if (ref) markerRefs.current[station.id] = ref; }}
             eventHandlers={{ click: () => onSelectStation(station.id) }}
           >
-            <Popup className="compact-popup">
+            <Popup>
               <div style={{ minWidth: 140 }}>
                 <strong className="block text-xs leading-snug mb-1">{station.name}</strong>
                 <div className="flex items-center gap-2">

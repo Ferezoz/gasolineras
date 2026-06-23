@@ -1,13 +1,9 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-/* Compact Leaflet popup */
-.compact-popup .leaflet-popup-content-wrapper {
-  padding: 0;
-  border-radius: 10px;
-}
-.compact-popup .leaflet-popup-content {
-  margin: 10px 12px;
+/* Spinner — border-t-transparent gets overridden by dark: variants so we force it */
+.spinner {
+  border-top-color: transparent !important;
 }
 
 /* Safe area insets for iOS standalone mode (notch / Dynamic Island) */
