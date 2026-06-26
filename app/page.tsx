@@ -77,7 +77,7 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-6 px-4 text-center">
         <div className="text-6xl">⛽</div>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Gasolineras MX</h1>
-        <p className="text-gray-500 max-w-sm">
+        <p className="text-gray-500 dark:text-gray-400 max-w-sm">
           Encuentra las gasolineras más cercanas y baratas en tu área.
         </p>
 
@@ -99,10 +99,10 @@ export default function Home() {
 
         {geo.status === "denied" && (
           <div className="flex flex-col items-center gap-3">
-            <p className="text-sm text-gray-500 max-w-xs">
+            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
               Necesitamos acceso a tu ubicación para mostrarte las gasolineras más cercanas.
             </p>
-            <p className="text-xs text-gray-400 max-w-xs">
+            <p className="text-xs text-gray-400 dark:text-gray-500 max-w-xs">
               Asegúrate de dar permiso en los ajustes de tu dispositivo o navegador.
             </p>
             <button
