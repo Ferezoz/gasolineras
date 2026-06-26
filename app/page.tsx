@@ -8,6 +8,7 @@ import MapWrapper from "@/app/components/MapWrapper";
 import { MapAppPicker } from "@/app/components/DirectionsButton";
 
 type GeoState =
+  | { status: "checking" }
   | { status: "idle" }
   | { status: "requesting" }
   | { status: "granted"; lat: number; lng: number }
@@ -22,7 +23,7 @@ type FetchState =
 const FUEL_TYPES: FuelType[] = ["magna", "premium", "diesel"];
 
 export default function Home() {
-  const [geo, setGeo] = useState<GeoState>({ status: "idle" });
+  const [geo, setGeo] = useState<GeoState>({ status: "checking" });
   const [fuelType, setFuelType] = useState<FuelType>("magna");
   const [fetchState, setFetchState] = useState<FetchState>({ status: "idle" });
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -43,15 +44,27 @@ export default function Home() {
     );
   }, []);
 
-  // If already granted, skip landing screen
+  // Check permission state before first render to avoid landing screen flash
   useEffect(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) { setGeo({ status: "idle" }); return; }
     if (navigator.permissions) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state === "granted") requestLocation();
+        if (result.state === "granted") {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
+            () => setGeo({ status: "idle" }),
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
+        } else if (result.state === "denied") {
+          setGeo({ status: "denied" });
+        } else {
+          setGeo({ status: "idle" });
+        }
       });
+    } else {
+      setGeo({ status: "idle" });
     }
-  }, [requestLocation]);
+  }, []);
 
   // Fetch stations when location changes
   useEffect(() => {
@@ -70,6 +83,13 @@ export default function Home() {
       })
       .catch((err) => setFetchState({ status: "error", message: String(err) }));
   }, [geo, fuelType, searchCenter]);
+
+  // --- Checking permission silently ---
+  if (geo.status === "checking") return (
+    <div className="flex items-center justify-center min-h-[100dvh]">
+      <div className="w-8 h-8 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   // --- Landing screen (idle, requesting, denied) ---
   if (geo.status !== "granted") {
