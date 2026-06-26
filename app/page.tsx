@@ -75,7 +75,7 @@ export default function Home() {
   if (geo.status !== "granted") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-6 px-4 text-center">
-        <img src="/apple-icon.png" alt="Gasolineras MX" className="w-24 h-24 rounded-[22px] shadow-xl" />
+        <img src="/app-icon.svg" alt="Gasolineras MX" className="w-24 h-24 rounded-[22px] shadow-xl" />
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Gasolineras MX</h1>
         <p className="text-gray-500 dark:text-gray-400 max-w-sm">
           Encuentra las gasolineras más cercanas y baratas en tu área.
