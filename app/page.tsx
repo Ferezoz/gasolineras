@@ -102,6 +102,9 @@ export default function Home() {
             <p className="text-sm text-gray-500 max-w-xs">
               Necesitamos acceso a tu ubicación para mostrarte las gasolineras más cercanas.
             </p>
+            <p className="text-xs text-gray-400 max-w-xs">
+              Asegúrate de dar permiso en los ajustes de tu dispositivo o navegador.
+            </p>
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-colors cursor-pointer"
