@@ -46,7 +46,7 @@ export default function Home() {
       : null;
     navigator.geolocation.getCurrentPosition(
       (pos) => { if (watchdog) clearTimeout(watchdog); setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }); },
-      () => { if (watchdog) clearTimeout(watchdog); setGeo({ status: "denied" }); },
+      () => { if (watchdog) clearTimeout(watchdog); setGeo({ status: isStandalone ? "pwa-blocked" : "denied" }); },
       GEO_OPTIONS
     );
   }, []);
