@@ -38,8 +38,23 @@ export default function Home() {
   const requestLocation = useCallback(() => {
     setGeo({ status: "requesting" });
     navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        localStorage.setItem("locationGranted", "1");
+        setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude });
+      },
+      () => {
+        localStorage.removeItem("locationGranted");
+        setGeo({ status: "denied" });
+      },
+      GEO_OPTIONS
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!navigator.geolocation || !localStorage.getItem("locationGranted")) return;
+    navigator.geolocation.getCurrentPosition(
       (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setGeo({ status: "denied" }),
+      () => { localStorage.removeItem("locationGranted"); },
       GEO_OPTIONS
     );
   }, []);
