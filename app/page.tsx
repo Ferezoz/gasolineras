@@ -47,20 +47,11 @@ export default function Home() {
 
   useEffect(() => {
     if (!navigator.geolocation) { setGeo({ status: "idle" }); return; }
-    if (!navigator.permissions) { setGeo({ status: "idle" }); return; }
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "granted") {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
-          () => setGeo({ status: "idle" }),
-          GEO_OPTIONS
-        );
-      } else if (result.state === "denied") {
-        setGeo({ status: "denied" });
-      } else {
-        setGeo({ status: "idle" });
-      }
-    }).catch(() => setGeo({ status: "idle" }));
+    navigator.geolocation.getCurrentPosition(
+      (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => setGeo({ status: "idle" }),
+      { ...GEO_OPTIONS, timeout: 3000 }
+    );
   }, []);
 
   // Fetch stations when location changes
