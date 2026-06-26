@@ -182,9 +182,9 @@ export default function Map({ userLat, userLng, stations, fuelType, selectedId, 
                   href={getDirectionsUrl(preferred, station.lat, station.lng)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1.5 flex items-center justify-center gap-1 text-xs border border-gray-300 hover:bg-gray-100 text-gray-600 px-2 py-1 rounded transition-colors"
+                  className="mt-1.5 flex items-center justify-center gap-1.5 text-xs border border-gray-300 hover:bg-gray-100 !text-gray-600 px-2 py-1 rounded transition-colors"
                 >
-                  <span>→</span><span>Cómo llegar</span>
+                  → Cómo llegar
                 </a>
               </div>
             </Popup>

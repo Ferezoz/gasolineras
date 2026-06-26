@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+/* Leaflet popup resets — override Helvetica Neue with page font */
+.leaflet-container { font-family: inherit; }
+.leaflet-popup-content { line-height: normal; }
+
 /* Spinner — border-t-transparent gets overridden by dark: variants so we force it */
 .spinner {
   border-top-color: transparent !important;
