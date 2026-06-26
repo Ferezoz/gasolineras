@@ -47,6 +47,10 @@ export default function Home() {
 
   useEffect(() => {
     if (!navigator.geolocation) { setGeo({ status: "idle" }); return; }
+    const isStandalone =
+      ("standalone" in navigator && (navigator as Navigator & { standalone?: boolean }).standalone === true) ||
+      window.matchMedia("(display-mode: standalone)").matches;
+    if (isStandalone) { setGeo({ status: "idle" }); return; }
     navigator.geolocation.getCurrentPosition(
       (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
       () => setGeo({ status: "idle" }),
