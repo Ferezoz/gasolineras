@@ -11,8 +11,7 @@ type GeoState =
   | { status: "idle" }
   | { status: "requesting" }
   | { status: "granted"; lat: number; lng: number }
-  | { status: "denied" }
-  | { status: "pwa-blocked" };
+  | { status: "denied" };
 
 type FetchState =
   | { status: "idle" }
@@ -38,15 +37,9 @@ export default function Home() {
 
   const requestLocation = useCallback(() => {
     setGeo({ status: "requesting" });
-    const isStandalone =
-      ("standalone" in navigator && (navigator as Navigator & { standalone?: boolean }).standalone === true) ||
-      window.matchMedia("(display-mode: standalone)").matches;
-    const watchdog = isStandalone
-      ? setTimeout(() => setGeo({ status: "pwa-blocked" }), 4000)
-      : null;
     navigator.geolocation.getCurrentPosition(
-      (pos) => { if (watchdog) clearTimeout(watchdog); setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }); },
-      () => { if (watchdog) clearTimeout(watchdog); setGeo({ status: isStandalone ? "pwa-blocked" : "denied" }); },
+      (pos) => setGeo({ status: "granted", lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => setGeo({ status: "denied" }),
       GEO_OPTIONS
     );
   }, []);
@@ -98,13 +91,13 @@ export default function Home() {
         {geo.status === "denied" && (
           <div className="flex flex-col items-center gap-3">
             <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
-              Necesitamos acceso a tu ubicación para mostrarte las gasolineras más cercanas.
+              El permiso de ubicación fue bloqueado.
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500 max-w-xs">
-              Asegúrate de dar permiso en los ajustes de tu dispositivo o navegador.
+              En Safari, toca <strong>AA</strong> en la barra de dirección → Ajustes del sitio web → Ubicación → Permitir.
             </p>
             <button
-              onClick={() => window.location.reload()}
+              onClick={requestLocation}
               className="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-colors cursor-pointer"
             >
               Intentar de nuevo
@@ -112,24 +105,6 @@ export default function Home() {
           </div>
         )}
 
-        {geo.status === "pwa-blocked" && (
-          <div className="flex flex-col items-center gap-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs">
-              Para usar la app necesitas permitir la ubicación primero.
-            </p>
-            <ol className="text-xs text-gray-400 dark:text-gray-500 max-w-xs text-left space-y-1 list-decimal list-inside">
-              <li>Abre esta página en Safari</li>
-              <li>Permite el acceso a tu ubicación</li>
-              <li>Vuelve a esta app</li>
-            </ol>
-            <button
-              onClick={() => setGeo({ status: "idle" })}
-              className="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-colors cursor-pointer"
-            >
-              Intentar de nuevo
-            </button>
-          </div>
-        )}
       </div>
     );
   }
