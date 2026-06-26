@@ -61,7 +61,7 @@ export default function Home() {
       } else {
         setGeo({ status: "idle" });
       }
-    });
+    }).catch(() => setGeo({ status: "idle" }));
   }, []);
 
   // Fetch stations when location changes
