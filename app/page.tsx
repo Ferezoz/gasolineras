@@ -7,11 +7,12 @@ import StationList from "@/app/components/StationList";
 import MapWrapper from "@/app/components/MapWrapper";
 import { MapAppPicker } from "@/app/components/DirectionsButton";
 
+type LocationSource = "ip" | "gps" | "fallback";
+
 type GeoState =
-  | { status: "idle" }
-  | { status: "requesting" }
-  | { status: "granted"; lat: number; lng: number }
-  | { status: "denied"; message: string };
+  | { status: "loading" }
+  | { status: "ready"; lat: number; lng: number; source: LocationSource; city?: string }
+  | { status: "error" };
 
 type FetchState =
   | { status: "idle" }
@@ -22,140 +23,88 @@ type FetchState =
 const FUEL_TYPES: FuelType[] = ["magna", "premium", "diesel"];
 
 export default function Home() {
-  const [geo, setGeo] = useState<GeoState>({ status: "idle" });
+  const [geo, setGeo] = useState<GeoState>({ status: "loading" });
   const [fuelType, setFuelType] = useState<FuelType>("magna");
   const [fetchState, setFetchState] = useState<FetchState>({ status: "idle" });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [focusKey, setFocusKey] = useState(0);
   const [searchCenter, setSearchCenter] = useState<{ lat: number; lng: number } | null>(null);
+  const [requestingGps, setRequestingGps] = useState(false);
 
   const selectStation = useCallback((id: string) => {
     setSelectedId(id);
     setFocusKey((k) => k + 1);
   }, []);
 
-  const requestLocation = useCallback(() => {
-    setGeo({ status: "requesting" });
-    if (!navigator.geolocation) {
-      setGeo({
-        status: "denied",
-        message: "Tu navegador no soporta geolocalización.",
-      });
-      return;
-    }
+  // Load IP-based location on mount
+  useEffect(() => {
+    fetch("/api/location")
+      .then((r) => r.json())
+      .then((data: { lat: number; lng: number; city?: string; source: LocationSource }) => {
+        setGeo({ status: "ready", lat: data.lat, lng: data.lng, city: data.city, source: data.source });
+      })
+      .catch(() => setGeo({ status: "error" }));
+  }, []);
+
+  // Upgrade to GPS
+  const upgradeToGps = useCallback(() => {
+    if (!navigator.geolocation) return;
+    setRequestingGps(true);
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setGeo({
-          status: "granted",
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
+        setGeo({ status: "ready", lat: pos.coords.latitude, lng: pos.coords.longitude, source: "gps" });
+        setSearchCenter(null);
+        setRequestingGps(false);
       },
-      (err) => {
-        setGeo({
-          status: "denied",
-          message: `No se pudo obtener la ubicación: ${err.message}`,
-        });
-      },
+      () => setRequestingGps(false),
       { enableHighAccuracy: true, timeout: 10000 }
     );
   }, []);
 
-  // Auto-request on mount (only if not previously denied)
-  useEffect(() => {
-    if (navigator.permissions) {
-      navigator.permissions.query({ name: "geolocation" }).then((result) => {
-        if (result.state !== "denied") requestLocation();
-      });
-    } else {
-      requestLocation();
-    }
-  }, [requestLocation]);
-
   // Fetch stations whenever location, search center, or fuel type changes
   useEffect(() => {
-    if (geo.status !== "granted") return;
-
+    if (geo.status !== "ready") return;
     setFetchState({ status: "loading" });
     setSelectedId(null);
-
     const center = searchCenter ?? { lat: geo.lat, lng: geo.lng };
     const url = new URL("/api/stations", window.location.origin);
     url.searchParams.set("lat", String(center.lat));
     url.searchParams.set("lng", String(center.lng));
     url.searchParams.set("fuelType", fuelType);
-
     fetch(url.toString())
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((data: { stations: Station[]; error?: string }) => {
         setFetchState({ status: "done", stations: data.stations ?? [] });
       })
-      .catch((err) => {
-        setFetchState({ status: "error", message: String(err) });
-      });
+      .catch((err) => setFetchState({ status: "error", message: String(err) }));
   }, [geo, fuelType, searchCenter]);
 
-  // --- Render: permission screens ---
-  if (geo.status === "idle" || geo.status === "requesting") {
+  // --- Loading screen ---
+  if (geo.status === "loading") {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen gap-6 px-4 text-center">
-        <div className="text-6xl">⛽</div>
-        <h1 className="text-3xl font-bold text-white">Gasolineras MX</h1>
-        <p className="text-gray-400 max-w-sm">
-          Encuentra las gasolineras más cercanas y baratas en tu área.
-        </p>
-        {geo.status === "requesting" ? (
-          <div className="flex flex-col items-center gap-4">
-            <div className="flex items-center gap-3 text-gray-400">
-              <div className="w-5 h-5 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
-              <span>Esperando permiso...</span>
-            </div>
-            <p className="text-sm text-gray-500 max-w-xs">
-              Acepta el permiso de ubicación en la ventana de tu navegador.
-            </p>
-            <button
-              onClick={requestLocation}
-              className="text-sm text-green-600 dark:text-green-400 underline cursor-pointer"
-            >
-              ¿No aparece el permiso? Intentar de nuevo
-            </button>
-          </div>
-        ) : (
-          <button
-            onClick={requestLocation}
-            className="px-6 py-3 bg-green-600 hover:bg-green-500 text-white font-semibold rounded-xl transition-colors cursor-pointer"
-          >
-            📍 Compartir ubicación
-          </button>
-        )}
+      <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-4">
+        <div className="text-5xl">⛽</div>
+        <div className="w-6 h-6 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (geo.status === "denied") {
+  if (geo.status === "error") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-4 px-4 text-center">
-        <div className="text-5xl">🚫</div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Ubicación denegada</h1>
-        <p className="text-gray-500 max-w-sm text-sm">
-          Para usar esta app necesitas permitir el acceso a tu ubicación. Ve a los ajustes de tu navegador y activa el permiso de ubicación para este sitio.
-        </p>
-        <button
-          onClick={requestLocation}
-          className="px-6 py-3 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-xl transition-colors cursor-pointer"
-        >
-          Ya lo activé, intentar de nuevo
+        <div className="text-5xl">⛽</div>
+        <p className="text-gray-500">No se pudo cargar la aplicación. Intenta de nuevo.</p>
+        <button onClick={() => window.location.reload()} className="px-6 py-3 bg-green-600 text-white rounded-xl cursor-pointer">
+          Reintentar
         </button>
       </div>
     );
   }
 
-  // geo.status === "granted"
-  const stations =
-    fetchState.status === "done" ? fetchState.stations : [];
+  const stations = fetchState.status === "done" ? fetchState.stations : [];
+  const isApproximate = geo.source !== "gps";
 
   return (
-    /* Mobile: single column. Desktop: two independent columns */
     <div className="flex flex-col md:flex-row h-[100dvh] overflow-hidden">
 
       {/* LEFT COLUMN: title + map */}
@@ -179,8 +128,8 @@ export default function Home() {
             stations={stations}
             fuelType={fuelType}
             selectedId={selectedId}
-            onSelectStation={selectStation}
             focusKey={focusKey}
+            onSelectStation={selectStation}
             onSearchHere={(lat, lng) => setSearchCenter({ lat, lng })}
             onRecenter={() => setSearchCenter(null)}
           />
@@ -189,7 +138,7 @@ export default function Home() {
 
       {/* RIGHT COLUMN: fuel buttons + station list */}
       <div className="flex flex-col flex-1 min-h-0 md:flex-none md:w-[420px] border-t md:border-t-0 md:border-l border-gray-200 dark:border-gray-800 overflow-hidden">
-        {/* Fuel selector — mobile: below map, desktop: in header */}
+        {/* Fuel selector */}
         <div className="shrink-0 flex items-center px-4 h-[52px] border-b border-gray-200 dark:border-gray-800">
           <div className="flex gap-1.5 flex-1 justify-center">
             {FUEL_TYPES.map((ft) => (
@@ -201,11 +150,38 @@ export default function Home() {
               </button>
             ))}
           </div>
+          {fetchState.status === "loading" && (
+            <div className="w-4 h-4 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin ml-2" />
+          )}
         </div>
+
+        {/* GPS upgrade banner */}
+        {isApproximate && (
+          <button
+            onClick={upgradeToGps}
+            disabled={requestingGps}
+            className="shrink-0 flex items-center justify-between px-4 py-2 bg-blue-50 dark:bg-blue-950/40 border-b border-blue-200 dark:border-blue-800 text-left cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-950/60 transition-colors"
+          >
+            <div>
+              <p className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                {requestingGps ? "Obteniendo ubicación exacta..." : "📍 Ubicación aproximada"}
+              </p>
+              {!requestingGps && (
+                <p className="text-xs text-blue-500 dark:text-blue-400">Toca para usar tu ubicación exacta</p>
+              )}
+            </div>
+            {requestingGps ? (
+              <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin shrink-0" />
+            ) : (
+              <span className="text-blue-500 text-xs shrink-0">→</span>
+            )}
+          </button>
+        )}
+
         {/* Station list */}
         <div className="flex-1 overflow-hidden flex flex-col p-3">
           {fetchState.status === "error" ? (
-            <div className="flex flex-col items-center justify-center h-full text-center gap-3 text-gray-500">
+            <div className="flex flex-col items-center justify-center h-full text-center gap-3 text-gray-400">
               <p className="text-3xl">⚠️</p>
               <p className="text-sm">{fetchState.message}</p>
               <button onClick={() => setFuelType(fuelType)} className="text-xs text-green-600 dark:text-green-500 underline cursor-pointer">
@@ -213,7 +189,7 @@ export default function Home() {
               </button>
             </div>
           ) : fetchState.status === "loading" ? (
-            <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-400 dark:text-gray-500">
+            <div className="flex flex-col items-center justify-center h-full gap-3 text-gray-400">
               <div className="w-8 h-8 border-2 border-gray-300 dark:border-white/40 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
               <span className="text-sm">Buscando gasolineras...</span>
             </div>
