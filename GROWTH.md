@@ -1,11 +1,11 @@
-# Gasolineras MX — Growth Plan
+# Tankeo — Growth Plan
 
 ## Current State
 - Gas station finder for Mexico (closest + cheapest)
 - Real-time CRE data, mobile-first, works as PWA
 - Vercel Analytics enabled (pageviews + speed insights)
 - No monetization, no user accounts, no ads
-- Currently deployed at Vercel URL (temporary)
+- Domain: tankeo.mx (registered, needs to be connected to Vercel)
 
 ## Domain & Branding Strategy
 - **Phase 1**: Launch as **Tankeo.mx** — memorable, shareable, works for word-of-mouth seeding
@@ -19,9 +19,11 @@
 Goal: get real humans using it and get first feedback.
 
 ### Domain & Branding
-- [ ] Register **Tankeo.mx** (~$200-400 MXN/year on Namecheap or GoDaddy)
+- [x] Register **Tankeo.mx**
 - [ ] Point Tankeo.mx to Vercel deployment (add domain in Vercel project settings)
-- [ ] Update app title and metadata from "Gasolineras MX" to "Tankeo"
+- [x] Update app title and metadata to "Tankeo"
+- [ ] Rename GitHub repo to "tankeo"
+- [ ] Rename Vercel project to "tankeo"
 - [ ] Skip GasolinaBarata.mx for now — revisit in Phase 2 when SEO matters
 
 ### SEO Foundation (do now, pays off later)
@@ -56,10 +58,10 @@ Goal: build organic traffic engine and understand user behavior.
 - [ ] Review Vercel Analytics weekly — top referrers, top cities, mobile vs desktop split
 
 ### SEO — City Landing Pages
-- [ ] Add `/gasolineras/cdmx` — "Gasolineras más baratas en CDMX"
-- [ ] Add `/gasolineras/guadalajara`
-- [ ] Add `/gasolineras/monterrey`
-- [ ] Add `/gasolineras/puebla`
+- [ ] Add `/cdmx` — "Gasolineras más baratas en CDMX"
+- [ ] Add `/guadalajara`
+- [ ] Add `/monterrey`
+- [ ] Add `/puebla`
 - [ ] Add structured data (JSON-LD) for each city page
 - [ ] Submit updated sitemap to Google Search Console
 
