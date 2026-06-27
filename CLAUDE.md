@@ -72,3 +72,6 @@ Push to `main` — Vercel auto-deploys on every push. No environment variables n
 - Mobile scroll lock: `html, body { overflow: hidden }` (safe since heights are exactly 100dvh — nothing clips) + `overscroll-contain` on the list div prevents iOS rubber-band bounce
 - Nav app preference (`mapapp-changed` custom event): `MapAppPicker` dispatches it on select, `useMapApp` listens — this is needed because `storage` events don't fire in the same tab
 - pnpm is the package manager (not npm or yarn)
+
+## Growth & Business
+See `GROWTH.md` for the full phased growth plan — distribution steps, monetization options, analytics events to add, and product pivots. Currently in Phase 1 (seeding).
