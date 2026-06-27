@@ -9,14 +9,15 @@
 
 ## Domain & Branding Strategy
 - **Now**: Register `GasolinaBarata.mx` — keyword domain, ranks fast on Google with no marketing budget
-- **Phase 3-4**: Register `Tankeo.mx` — brand name, scalable beyond gas prices
-- **Migration**: 301 redirect GasolinaBarata.mx → Tankeo.mx + Google Search Console change of address tool (Google transfers most SEO authority)
+- **Phase 3-4**: Migrate to `Tankeo.com` — global brand, scalable beyond Mexico and beyond gas prices
+- **Migration**: 301 redirect GasolinaBarata.mx → Tankeo.com + Google Search Console change of address tool (Google transfers most SEO authority)
+- `.com` for Tankeo because expansion plans include US border cities and eventually LATAM — `.mx` would limit the brand perception internationally
 
 ### Action
 - [ ] Register `GasolinaBarata.mx` on Namecheap or GoDaddy (~$200-400 MXN/year)
-- [ ] Point domain to Vercel deployment
+- [ ] Check availability of `Tankeo.com` on Namecheap — register now to reserve it (~$150-200 MXN/year)
+- [ ] Point GasolinaBarata.mx to Vercel deployment
 - [ ] Update app title/metadata to "GasolinaBarata"
-- [ ] Register `Tankeo.mx` now to reserve it (cheap, ~$200 MXN/year) even if not using it yet
 
 ---
 
