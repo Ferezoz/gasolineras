@@ -3,95 +3,146 @@
 ## Current State
 - Gas station finder for Mexico (closest + cheapest)
 - Real-time CRE data, mobile-first, works as PWA
+- Vercel Analytics enabled (pageviews + speed insights)
 - No monetization, no user accounts, no ads
 
 ---
 
-## 1. Analytics Foundation (Before Growing)
+## Phase 1 — Launch & Seed (0–100 users) ← YOU ARE HERE
 
-Add custom event tracking once traffic justifies it. Key events:
+Goal: get real humans using it and get first feedback.
 
-| Event | Why |
-|---|---|
-| `directions_clicked` + map app | Which app users prefer, which stations get navigated to |
-| `fuel_type_changed` | Is Premium/Diesel worth supporting? |
-| `search_area_moved` | Are users exploring or just looking near home? |
-| `permission_denied` | Funnel drop-off rate |
-| `cheapest_selected` vs `closest_selected` | What drives the decision? |
+### Steps
+- [ ] Share in r/mexico and r/cdmx — post with a screenshot showing cheapest gas near a popular area
+- [ ] Share in r/autos_mexico if it exists, or similar car subreddits
+- [ ] Post in Facebook groups: "Conductores CDMX", "Automovilistas México", "Gasolina México" — search for large driving groups
+- [ ] Send to 10 friends/family who drive and ask them to share if useful
+- [ ] Post on your personal Twitter/X: "Hice una app para encontrar la gasolina más barata cerca de ti en México — [link]"
+- [ ] Submit to Product Hunt (pick a Tuesday–Thursday, prepare a short description and screenshot)
+- [ ] Submit to Hacker News "Show HN" post
+- [ ] Add to Google Search Console — go to search.google.com/search-console, add the Vercel domain, submit sitemap
 
-Use PostHog (1M events/month free) when ready.
-
----
-
-## 2. Growth Channels
-
-### SEO
-- Add city-specific landing pages: `/gasolineras/cdmx`, `/gasolineras/guadalajara`, etc.
-- Target "gasolineras baratas cerca de mí" and similar queries
-- Add structured data (schema.org LocalBusiness) for station pages
-- Blog/content: weekly cheapest gas by city
-
-### Social
-- Auto-tweet/post cheapest gas price daily per city (bot)
-- "Gasolina más barata en CDMX hoy: $X.XX" — shareable image
-- TikTok/Reels showing price comparisons
-
-### Word of Mouth
-- Share button: "La gasolina más barata cerca de mí está en X a $X.XX"
-- WhatsApp-friendly share format (most used in Mexico)
+### When to move to Phase 2
+When you have 50+ daily users consistently or clear demand signal (people sharing it, asking for features).
 
 ---
 
-## 3. Business Models (Ranked by Effort)
+## Phase 2 — Traction & SEO (100–1,000 users)
 
-### Low effort
-**Google AdSense** — banner or interstitial ads. Easy to add, low CPM in Mexico (~$0.50-2). Not worth it until 10k+ daily users.
+Goal: build organic traffic engine and understand user behavior.
 
-**Affiliate links** — link to Waze/Google Maps (already have), potentially earn from map app referrals if programs exist.
+### Analytics
+- [ ] Add PostHog custom events (1M/month free — no cost yet)
+  - `directions_clicked` — which station, which map app
+  - `fuel_type_changed` — magna/premium/diesel split
+  - `search_area_moved` — how often users pan and re-search
+  - `permission_denied` — landing screen drop-off rate
+  - `cheapest_vs_closest` — which tile gets clicked more
+- [ ] Review Vercel Analytics weekly — top referrers, top cities, mobile vs desktop split
 
-### Medium effort
-**Featured listings** — gas stations pay $X/month to appear highlighted in the list. Direct sales to station owners or chains (Oxxo Gas, Petro 7, etc.). Requires sales effort but high margin.
+### SEO — City Landing Pages
+- [ ] Add `/gasolineras/cdmx` — "Gasolineras más baratas en CDMX"
+- [ ] Add `/gasolineras/guadalajara`
+- [ ] Add `/gasolineras/monterrey`
+- [ ] Add `/gasolineras/puebla`
+- [ ] Add structured data (JSON-LD) for each city page
+- [ ] Submit updated sitemap to Google Search Console
 
-**Price alerts** — users subscribe to get notified when a station near them drops below a threshold. Monetize with a freemium model (1 alert free, more with subscription ~$29 MXN/month).
+### Social Presence
+- [ ] Create a Twitter/X account @gasolinerasmx
+- [ ] Post daily: "⛽ Gasolina más barata en CDMX hoy: $XX.XX en [Station Name]" — pull from CRE data manually or automate
+- [ ] Create Instagram account — post price comparison graphics weekly
+- [ ] Post 3 TikToks/Reels showing the app in use — "Así encuentro la gasolina más barata"
 
-**Station reviews/ratings** — UGC layer. Monetize via premium insights sold back to station owners.
+### Share Feature
+- [ ] Add a share button on the station card: "Mira esta gasolina a $XX.XX cerca de ti — [link]"
+- [ ] Make it WhatsApp-friendly (og:image, og:description with price) so shared links look good in chat
 
-### High effort
-**B2B / Fleet management** — companies with delivery trucks or fleets need to optimize fuel costs. Sell a dashboard showing cheapest routes + fuel stops. $500-2000 MXN/month per company.
-
-**White label** — license the product to other companies (insurance, fleet, logistics). One-time + monthly fee.
-
-**API access** — sell real-time gas price API to other apps, fintechs, or comparison sites. Tiered pricing.
-
----
-
-## 4. Product Pivots
-
-### Expand data
-- Add **historical price trends** per station (CRE data is public, store it daily)
-- Show **price change indicators** (↑↓ vs last week)
-- Add **station amenities** (convenience store, car wash, 24h)
-
-### Expand geography
-- **LATAM expansion** — find equivalent public APIs in Colombia, Chile, Argentina
-- **US border cities** — compare US vs MX prices for cross-border drivers
-
-### Expand use case
-- **Route planner** — given a route, find the cheapest station along the way
-- **Price prediction** — ML model predicting when prices will drop
-- **Loyalty integration** — partner with Spin by OXXO or similar for rewards
-
-### Pivot to marketplace
-- Let stations **claim their listing** and update amenities, hours, photos
-- Stations pay to **promote offers** (e.g. "Free car wash with fill-up")
-- Becomes a Yelp-like layer on top of the CRE data
+### When to move to Phase 3
+500+ daily users, consistent organic search traffic, clear picture of what users want from analytics.
 
 ---
 
-## 5. Immediate Next Steps (No Code)
+## Phase 3 — Monetization (1,000–10,000 users)
 
-1. Share the app in Mexican car/driving Facebook groups and subreddits
-2. Set up Google Search Console to track organic traffic
-3. Enable Vercel Analytics (done) — wait for data
-4. Post on Twitter/X about cheapest gas price today in CDMX
-5. Submit to Mexican app directories and "herramientas útiles" lists
+Goal: generate first revenue without hurting UX.
+
+### Option A — Google AdSense (Low effort, low revenue)
+- [ ] Apply for Google AdSense (requires consistent traffic)
+- [ ] Add a single non-intrusive banner ad below the station list
+- [ ] Expected: ~$0.50–2 CPM in Mexico — meaningful only at 5k+ daily users
+- [ ] **When**: 2,000+ daily users
+
+### Option B — Featured Listings (Medium effort, higher revenue)
+- [ ] Design a "Destacada" badge for sponsored stations in the list
+- [ ] Build a simple admin panel to manually toggle featured status
+- [ ] Cold-email 20 Oxxo Gas, Petro 7, G500 station owners with a pitch deck
+- [ ] Pricing: ~$500–1,500 MXN/month per station
+- [ ] **When**: 1,000+ daily users, enough proof of traffic to show stations
+
+### Option C — Price Alerts (Medium effort, recurring revenue)
+- [ ] Build email/push notification when a nearby station drops below a price threshold
+- [ ] Free tier: 1 alert
+- [ ] Paid tier: unlimited alerts — $29–49 MXN/month
+- [ ] Requires user accounts (Google/Apple Sign-In)
+- [ ] **When**: strong retention signal from analytics, users returning daily
+
+### When to move to Phase 4
+First $1,000 MXN in revenue, or clear signal that one monetization model is working.
+
+---
+
+## Phase 4 — Expand (10,000+ users)
+
+Goal: build defensible moat and expand use case.
+
+### Product expansions
+- [ ] **Historical price trends** — store CRE data daily, show price graph per station
+- [ ] **Price change indicators** — ↑↓ vs last week on each card
+- [ ] **Station amenities** — convenience store, car wash, 24h, bathroom (crowdsourced)
+- [ ] **Route planner** — cheapest station along a given route (Google Maps Directions API)
+- [ ] **Favorites** — save stations you use regularly
+
+### Geography expansion
+- [ ] **US border cities** — compare US vs MX prices, target cross-border drivers
+- [ ] **LATAM** — find equivalent public APIs in Colombia (SICOM), Chile (CNE), Argentina (Enargas)
+
+### B2B pivot
+- [ ] **Fleet dashboard** — companies with delivery trucks optimize fuel costs across routes
+- [ ] Target SMBs in logistics, construction, food delivery
+- [ ] Pricing: $500–2,000 MXN/month per company
+- [ ] **When**: solid consumer product with proven data, can package as API
+
+---
+
+## Phase 5 — Scale / Pivot Options
+
+These are longer-term bets. Evaluate based on what the data shows.
+
+| Pivot | Description | Signal to pursue |
+|---|---|---|
+| **Marketplace** | Stations claim listings, post offers, pay for promotion | Stations reaching out asking to be featured |
+| **API product** | Sell real-time gas price API to fintechs, apps, logistics | Inbound requests for data access |
+| **White label** | License to insurance, fleet, or mapping companies | Enterprise inbound |
+| **Rewards/loyalty** | Partner with Spin by OXXO or similar for points | Strong repeat usage data |
+| **Media/content** | Weekly gas price report for journalists, become the source | Press citing your data |
+
+---
+
+## Metrics to Track at Each Phase
+
+| Phase | North Star Metric | Target |
+|---|---|---|
+| 1 | Daily active users | 50/day |
+| 2 | Organic search traffic | 30% of visits from Google |
+| 3 | Revenue | $1,000 MXN/month |
+| 4 | Retention | 30% of users return within 7 days |
+| 5 | MRR | $10,000 MXN/month |
+
+---
+
+## What NOT to do yet
+- ❌ Build a native app (unnecessary overhead, PWA is enough)
+- ❌ Spend money on ads before organic traffic is established
+- ❌ Add too many features before understanding what users actually want
+- ❌ Build user accounts before there's a clear reason to log in
