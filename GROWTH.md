@@ -8,16 +8,9 @@
 - Currently deployed at Vercel URL (temporary)
 
 ## Domain & Branding Strategy
-- **Now**: Register `GasolinaBarata.mx` — keyword domain, ranks fast on Google with no marketing budget
-- **Phase 3-4**: Migrate to `Tankeo.com` — global brand, scalable beyond Mexico and beyond gas prices
-- **Migration**: 301 redirect GasolinaBarata.mx → Tankeo.com + Google Search Console change of address tool (Google transfers most SEO authority)
-- `.com` for Tankeo because expansion plans include US border cities and eventually LATAM — `.mx` would limit the brand perception internationally
-
-### Action
-- [ ] Register `GasolinaBarata.mx` on Namecheap or GoDaddy (~$200-400 MXN/year)
-- [ ] Check availability of `Tankeo.com` on Namecheap — register now to reserve it (~$150-200 MXN/year)
-- [ ] Point GasolinaBarata.mx to Vercel deployment
-- [ ] Update app title/metadata to "GasolinaBarata"
+- **Phase 1**: Launch as **Tankeo.mx** — memorable, shareable, works for word-of-mouth seeding
+- **Phase 2**: Buy **GasolinaBarata.mx** if SEO data shows most traffic comes from Google searches — redirect to Tankeo.mx
+- **Phase 3-4**: Evaluate **Tankeo.com** once there's revenue to justify it (currently $6,000 USD premium — not worth it now)
 
 ---
 
@@ -25,15 +18,24 @@
 
 Goal: get real humans using it and get first feedback.
 
-### Steps
-- [ ] Share in r/mexico and r/cdmx — post with a screenshot showing cheapest gas near a popular area
-- [ ] Share in r/autos_mexico if it exists, or similar car subreddits
-- [ ] Post in Facebook groups: "Conductores CDMX", "Automovilistas México", "Gasolina México" — search for large driving groups
+### Domain & Branding
+- [ ] Register **Tankeo.mx** (~$200-400 MXN/year on Namecheap or GoDaddy)
+- [ ] Point Tankeo.mx to Vercel deployment (add domain in Vercel project settings)
+- [ ] Update app title and metadata from "Gasolineras MX" to "Tankeo"
+- [ ] Skip GasolinaBarata.mx for now — revisit in Phase 2 when SEO matters
+
+### SEO Foundation (do now, pays off later)
+- [ ] Set up Google Search Console — search.google.com/search-console, add Tankeo.mx, submit sitemap
+- [ ] Do NOT build city pages yet — domain needs traffic and trust first, add in Phase 2
+
+### Distribution (manual seeding)
+- [ ] Share in r/mexico and r/cdmx — post with screenshot showing cheapest gas near a popular area
+- [ ] Share in r/autos_mexico or similar car subreddits
+- [ ] Post in Facebook groups: "Conductores CDMX", "Automovilistas México", "Gasolina México"
 - [ ] Send to 10 friends/family who drive and ask them to share if useful
-- [ ] Post on your personal Twitter/X: "Hice una app para encontrar la gasolina más barata cerca de ti en México — [link]"
-- [ ] Submit to Product Hunt (pick a Tuesday–Thursday, prepare a short description and screenshot)
+- [ ] Post on your personal Twitter/X: "Hice una app para encontrar la gasolina más barata cerca de ti — tankeo.mx"
+- [ ] Submit to Product Hunt (pick a Tuesday–Thursday, prepare short description and screenshot)
 - [ ] Submit to Hacker News "Show HN" post
-- [ ] Add to Google Search Console — go to search.google.com/search-console, add the Vercel domain, submit sitemap
 
 ### When to move to Phase 2
 When you have 50+ daily users consistently or clear demand signal (people sharing it, asking for features).
