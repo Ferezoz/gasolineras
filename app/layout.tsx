@@ -4,13 +4,13 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Gasolineras MX",
-  description: "Encuentra las gasolineras más cercanas y baratas en México",
+  title: "Tankeo — Gasolina barata cerca de ti",
+  description: "Encuentra las gasolineras más cercanas y baratas en México en segundos.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Gasolineras MX",
+    title: "Tankeo",
   },
 };
 

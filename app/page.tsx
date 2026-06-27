@@ -83,8 +83,8 @@ export default function Home() {
   if (geo.status !== "granted") {
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] gap-6 px-4 text-center">
-        <img src="/apple-icon" alt="Gasolineras MX" className="w-24 h-24 rounded-[22px] shadow-xl" />
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Gasolineras MX</h1>
+        <img src="/apple-icon" alt="Tankeo" className="w-24 h-24 rounded-[22px] shadow-xl" />
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Tankeo</h1>
         <p className="text-gray-500 dark:text-gray-400 max-w-sm">
           Encuentra las gasolineras más cercanas y baratas en tu área.
         </p>
@@ -136,12 +136,12 @@ export default function Home() {
       <div className="flex flex-col h-[45dvh] md:h-auto md:flex-1 overflow-hidden">
         <div className="md:hidden safe-top shrink-0 flex items-center gap-3 px-4 py-2 border-b border-gray-200 dark:border-gray-800">
           <span className="text-xl">⛽</span>
-          <h1 className="text-base font-bold text-gray-900 dark:text-white tracking-tight mr-auto">Gasolineras MX</h1>
+          <h1 className="text-base font-bold text-gray-900 dark:text-white tracking-tight mr-auto">Tankeo</h1>
           <MapAppPicker />
         </div>
         <div className="safe-top hidden md:flex shrink-0 items-center gap-2 px-4 h-[52px] border-b border-gray-200 dark:border-gray-800">
           <span className="text-xl">⛽</span>
-          <h1 className="text-base font-bold text-gray-900 dark:text-white tracking-tight">Gasolineras MX</h1>
+          <h1 className="text-base font-bold text-gray-900 dark:text-white tracking-tight">Tankeo</h1>
         </div>
         <div className="flex-1 p-3">
           <MapWrapper

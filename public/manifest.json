@@ -1,7 +1,7 @@
 {
-  "name": "Gasolineras MX",
-  "short_name": "Gasolineras",
-  "description": "Encuentra las gasolineras más cercanas y baratas en México",
+  "name": "Tankeo",
+  "short_name": "Tankeo",
+  "description": "Encuentra las gasolineras más cercanas y baratas en México en segundos.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#030712",
