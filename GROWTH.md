@@ -20,10 +20,10 @@ Goal: get real humans using it and get first feedback.
 
 ### Domain & Branding
 - [x] Register **Tankeo.mx**
-- [ ] Point Tankeo.mx to Vercel deployment (add domain in Vercel project settings)
+- [x] Point Tankeo.mx to Vercel deployment
 - [x] Update app title and metadata to "Tankeo"
-- [ ] Rename GitHub repo to "tankeo"
-- [ ] Rename Vercel project to "tankeo"
+- [x] Rename GitHub repo to "tankeo"
+- [x] Rename Vercel project to "tankeo"
 - [ ] Skip GasolinaBarata.mx for now — revisit in Phase 2 when SEO matters
 
 ### SEO Foundation (do now, pays off later)
