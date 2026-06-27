@@ -1,0 +1,22 @@
+{
+  "name": "Gasolineras MX",
+  "short_name": "Gasolineras",
+  "description": "Encuentra las gasolineras más cercanas y baratas en México",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
