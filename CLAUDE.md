@@ -1,20 +1,22 @@
-# Gasolineras MX
+# Tankeo ⛽
 
-Next.js 16 app (App Router, React 19, TypeScript, Tailwind v4, pnpm) that shows Mexican gas stations near the user — closest and cheapest — with an interactive map. Works as a PWA (installable on iOS via "Add to Home Screen").
+Next.js 16 app (App Router, React 19, TypeScript, Tailwind v4, pnpm) that shows Mexican gas stations near the user — closest and cheapest — with an interactive map. Live at [tankeo.mx](https://tankeo.mx). Works as a PWA (installable on iOS via "Add to Home Screen").
 
 ## What it does
 
-1. User opens the app → browser asks for geolocation permission
-2. Once granted, fetches nearby stations from CRE XML feeds (10 km radius, 30 stations max)
-3. Shows an interactive Leaflet map with price-labeled markers (green = cheapest, blue = closest, white = selected)
-4. Shows a sortable list — sort by price (default) or distance
-5. Summary tiles for cheapest and closest stations at the top of the list
-6. Fuel type selector: Magna, Premium, Diesel
-7. "Buscar en esta zona" button appears when panning the map — re-fetches for the new center
-8. Re-center button (◎) returns map and results to GPS location
-9. "Cómo llegar" opens preferred navigation app (Google Maps / Apple Maps / Waze — saved in localStorage); also available in map marker popups
-10. Map marker popups are compact: name, price, distance, "Cómo llegar" link
-11. Light/dark theme follows system preference
+1. User opens the app → silent geolocation check on load (skips landing if already granted)
+2. If not granted → landing screen with "Compartir ubicación" button
+3. Once granted, fetches nearby stations from CRE XML feeds (10 km radius, 30 stations max)
+4. Shows an interactive Leaflet map with price-labeled markers (green = cheapest, blue = closest, white = selected)
+5. Shows a sortable list — sort by price (default) or distance
+6. Summary tiles for cheapest and closest stations at the top of the list
+7. Fuel type selector: Magna, Premium, Diesel
+8. "Buscar en esta zona" button appears when panning the map — re-fetches for the new center
+9. Re-center button (◎) returns map and results to GPS location
+10. "Cómo llegar" opens preferred navigation app (Google Maps / Apple Maps / Waze — saved in localStorage); also available in map marker popups
+11. Map marker popups are compact: name, price, distance, "Cómo llegar" link
+12. Light/dark theme follows system preference
+13. Bottom fade gradient on station list hints at scrollability
 
 ## Data source
 
@@ -33,14 +35,20 @@ The API route at `/api/stations?lat=X&lng=Y&fuelType=magna` fetches both XMLs in
 - `app/api/stations/route.ts` — fetches CRE XML feeds, parses, joins by `place_id`, filters by distance
 - `app/components/Map.tsx` — Leaflet map with price divIcons, "Buscar en esta zona" button, re-center button
 - `app/components/MapWrapper.tsx` — wraps Map with `dynamic(..., { ssr: false })`
-- `app/components/StationList.tsx` — sort toggle, summary tiles (cheapest + closest), scrollable card list
+- `app/components/StationList.tsx` — sort toggle, summary tiles (cheapest + closest), scrollable card list with bottom fade
 - `app/components/StationCard.tsx` — price, distance, badges, "Cómo llegar" link
 - `app/components/DirectionsButton.tsx` — directions link + `MapAppPicker` modal for nav app preference
 - `app/lib/stations.ts` — `Station` type, `FuelType` type
 - `app/lib/distance.ts` — Haversine formula + distance formatter
 - `app/icon.tsx` — auto-generated favicon (32×32)
-- `app/apple-icon.tsx` — auto-generated Apple touch icon (180×180)
+- `app/apple-icon.tsx` — auto-generated Apple touch icon (180×180), also used as logo on landing screen and header
 - `public/manifest.json` — PWA manifest
+
+## Analytics
+
+- **Vercel Analytics** — pageviews, visitors, referrers (enabled, production only)
+- **Vercel Speed Insights** — Core Web Vitals (enabled, production only)
+- Custom event tracking (PostHog) planned for Phase 2 — see `GROWTH.md`
 
 ## Run locally
 
@@ -71,7 +79,17 @@ Push to `main` — Vercel auto-deploys on every push. No environment variables n
 - `dvh` units used throughout to handle mobile browser chrome correctly
 - Mobile scroll lock: `html, body { overflow: hidden }` (safe since heights are exactly 100dvh — nothing clips) + `overscroll-contain` on the list div prevents iOS rubber-band bounce
 - Nav app preference (`mapapp-changed` custom event): `MapAppPicker` dispatches it on select, `useMapApp` listens — this is needed because `storage` events don't fire in the same tab
+- Geolocation flow: `checking` state on load → silent `getCurrentPosition` call → if granted skip landing screen, if not show idle screen. `navigator.permissions` API is unreliable on iOS so we call `getCurrentPosition` directly
+- iOS PWA geolocation: permission popup may not appear in standalone mode if permission was previously denied at domain level — user must reset via Safari AA menu → Website Settings → Location
+- Leaflet popup font overridden to page system font (`.leaflet-container { font-family: inherit }`) — Leaflet defaults to Helvetica Neue which renders arrows differently
+- `!text-gray-600` (Tailwind `!important`) needed on Leaflet popup links — Leaflet CSS has higher specificity than regular Tailwind classes for anchor colors
+- `/apple-icon` (no extension) is the correct path for Next.js metadata-generated images — `/apple-icon.png` returns 404
 - pnpm is the package manager (not npm or yarn)
 
 ## Growth & Business
+
 See `GROWTH.md` for the full phased growth plan — distribution steps, monetization options, analytics events to add, and product pivots. Currently in Phase 1 (seeding).
+
+- Brand: **Tankeo** — domain tankeo.mx registered
+- Future brand domain: Tankeo.com (currently $6k premium, defer to Phase 3-4)
+- SEO keyword domain: GasolinaBarata.mx — consider buying in Phase 2 if most traffic comes from Google
