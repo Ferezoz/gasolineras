@@ -156,7 +156,7 @@ export default function StationList({ stations, fuelType, selectedId, onSelect }
           </>
         )}
         </div>
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white dark:from-gray-950 to-transparent" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-white dark:from-gray-950 to-transparent" />
       </div>
     </div>
   );
